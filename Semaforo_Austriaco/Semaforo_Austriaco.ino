@@ -1,9 +1,9 @@
-int Red1 = 5;
-int Yellow1 = 6;
-int Green1 = 7;
-int Red = 8;
-int Yellow = 9;
-int Green = 10;
+int r = 5;
+int y = 6;
+int g = 7;
+int r1 = 8;
+int y1 = 9;
+int g1 = 10;
 
 void setup() {
   
@@ -16,36 +16,27 @@ void setup() {
 }
 
 void loop() {
-         
-  digitalWrite(Red1, LOW);
-  digitalWrite(Yellow, LOW);    
-  digitalWrite(Yellow1, LOW);
-  digitalWrite(Red, HIGH);        //ROSSO
-  digitalWrite(Green1, HIGH);
-  delay(1000);   
   
-  Lampeggia(Green1, 400, 4);
-             
-  digitalWrite(Green1, LOW);
-  digitalWrite(Yellow1, HIGH);      //GIALLO
-  digitalWrite(Yellow, HIGH);    
-  delay(2000);  
+  VerdeRossoGiallo(r1, r, g1);
         
-  digitalWrite(Red, LOW);
-  digitalWrite(Yellow, LOW);    //VERDE
-  digitalWrite(Yellow1, LOW);
-  digitalWrite(Red1, HIGH);
-  digitalWrite(Green, HIGH);
-  delay(1000);
-  
-  Lampeggia(Green, 400, 4);
-  
-  digitalWrite(Green, LOW);     //GIALLO
-  digitalWrite(Yellow, HIGH);
-  digitalWrite(Yellow1, HIGH);
-  delay(2000);
+  VerdeRossoGiallo(r, r1, g);
 }
 
+void VerdeRossoGiallo(int r_off, int r_on, int g){
+  digitalWrite(r_off, LOW);
+  digitalWrite(y, LOW);    
+  digitalWrite(y1, LOW);
+  digitalWrite(r_on, HIGH);
+  digitalWrite(g, HIGH);
+  delay(1000);   
+  
+  Lampeggia(g, 400, 4);
+  
+  digitalWrite(g, LOW);
+  digitalWrite(y1, HIGH);
+  digitalWrite(y, HIGH);    
+  delay(2000);  
+}
 
 void Lampeggia( int led, int ritardo, int n){
     for (int i = 0; i <= n; i++){
@@ -55,6 +46,3 @@ void Lampeggia( int led, int ritardo, int n){
     digitalWrite(led, HIGH);
   }
 }
-
-
-
