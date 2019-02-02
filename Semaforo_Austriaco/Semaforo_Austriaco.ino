@@ -1,28 +1,34 @@
-int r = 5;
-int y = 6;
-int g = 7;
+int r  = 5;
+int y  = 6;
+int g  = 7;
 int r1 = 8;
 int y1 = 9;
 int g1 = 10;
+int n_lamp   = 0;  
+int t_lamp   = 0;
+int t_rosso  = 0;    //v + g
+int t_giallo = 0;    // r - v
 
 void setup() {
-  
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);
   pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
+  Serial.begin(9600);
+  Serial.print("Digita il numero di lampeggi del verde");
+  Input(n_lamp);
+  Serial.print("Digita il tempo di intervallo per i lampeggi del verde");
+  Input(t_lamp);
 }
 
 void loop() {
-  
-  VerdeRossoGiallo(r1, r, g1);
-        
-  VerdeRossoGiallo(r, r1, g);
+  Lato(r1, r, g1);
+  Lato(r, r1, g);
 }
 
-void VerdeRossoGiallo(int r_off, int r_on, int g){
+void Lato(int r_off, int r_on, int g){
   digitalWrite(r_off, LOW);
   digitalWrite(y, LOW);    
   digitalWrite(y1, LOW);
@@ -38,11 +44,18 @@ void VerdeRossoGiallo(int r_off, int r_on, int g){
   delay(2000);  
 }
 
-void Lampeggia( int led, int ritardo, int n){
-    for (int i = 0; i <= n; i++){
-    delay(ritardo);
+
+void Input(int var){
+  while (Serial.available() == 0) {};
+  var = Serial.readString().toInt();
+}
+
+
+void Lampeggia( int led, int t_lamp, int n_lamp){
+    for (int i = 0; i <= n_lamp; i++){
+    delay(t_lamp);
     digitalWrite(led, LOW);
-    delay(ritardo);
+    delay(t_lamp);
     digitalWrite(led, HIGH);
   }
 }
