@@ -1,61 +1,60 @@
+            //  linea 1
 int r  = 5;
 int y  = 6;
 int g  = 7;
+            //  linea 2
 int r1 = 8;
 int y1 = 9;
 int g1 = 10;
-int n_lamp   = 0;  
-int t_lamp   = 0;
-int t_rosso  = 0;    //v + g
-int t_giallo = 0;    // r - v
+            //  variabili input
+int n_lamp;  
+int t_lamp;
+int t_verde;
+int t_giallo;
 
 void setup() {
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
-  Serial.begin(9600);
-  Serial.print("Digita il numero di lampeggi del verde");
-  Input(n_lamp);
-  Serial.print("Digita il tempo di intervallo per i lampeggi del verde");
-  Input(t_lamp);
+  pinMode(r,  OUTPUT);
+  pinMode(y,  OUTPUT);
+  pinMode(g,  OUTPUT);
+  pinMode(r1,  OUTPUT);
+  pinMode(y1,  OUTPUT);
+  pinMode(g1, OUTPUT);
+  Serial.begin(9600);                       //  tempo rosso = tempo verde + (tempo lampeggi verde * lampeggi) + tempo giallo
+  n_lamp   = input("Quanti lampeggi deve fare il verde?", n_lamp, " lampeggi");
+  t_lamp   = input("Quanti millisecondi devono durare i lampeggi del verde?", t_lamp, " millisecondi");
+  t_verde  = input("Quanti millisecondi deve stare acceso il verde?", t_verde, " millisecondi");
+  t_giallo = input("Quanti millisecondi deve stare acceso il giallo?", t_giallo, " millisecondi");
 }
 
-void loop() {
-  Lato(r1, r, g1);
-  Lato(r, r1, g);
+void loop() {                               //  richiamo il metodo che verrà ripetuto 2 volte
+  lato(r1, r, g1);
+  lato(r, r1, g);
 }
-
-void Lato(int r_off, int r_on, int g){
+                                            //  accensione del verde e del rosso del lato opposto + spegnimento dei led gialli e rosso
+void lato(int r_off, int r_on, int g){
   digitalWrite(r_off, LOW);
   digitalWrite(y, LOW);    
   digitalWrite(y1, LOW);
   digitalWrite(r_on, HIGH);
   digitalWrite(g, HIGH);
-  delay(1000);   
+  delay(t_verde);   
+                                            //  lampeggio del verde
+  for (int i = 0; i <= n_lamp; i++){
+    delay(t_lamp);
+    digitalWrite(g, HIGH);
+    delay(t_lamp);
+    digitalWrite(g, LOW);
+  }                                         //  accensione dei led gialli
   
-  Lampeggia(g, 400, 4);
-  
-  digitalWrite(g, LOW);
   digitalWrite(y1, HIGH);
   digitalWrite(y, HIGH);    
-  delay(2000);  
+  delay(t_giallo);  
 }
-
-
-void Input(int var){
+                                            //  metodo utilizzato per assegnare i dati presi in input alle variabili
+int input(String frase, int var , String frase2){
+  Serial.println(frase);
   while (Serial.available() == 0) {};
   var = Serial.readString().toInt();
-}
-
-
-void Lampeggia( int led, int t_lamp, int n_lamp){
-    for (int i = 0; i <= n_lamp; i++){
-    delay(t_lamp);
-    digitalWrite(led, LOW);
-    delay(t_lamp);
-    digitalWrite(led, HIGH);
-  }
+  Serial.println(var + frase2);
+  return var;
 }
